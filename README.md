@@ -112,14 +112,31 @@ Variables disponibles:
    pytest -v
    ```
 
-4. **Iniciar el bot:**
+4. **Iniciar el bot en Telegram:**
    ```bash
    python -m bot.main
    ```
 
 ---
 
-### Opción 2: Con Docker Compose
+### Opción 2: En WhatsApp por Código QR (sin API de Meta ni Twilio)
+
+El proyecto incluye el conector `whatsapp_qr/` (basado en `@whiskeysockets/baileys`) conectado en tiempo real al motor Python (`bot.whatsapp.processor`). Permite vincular tu propio número de celular escaneando un código QR desde **Dispositivos vinculados**:
+
+1. **Ejecutar el script de arranque rápido (PowerShell):**
+   ```powershell
+   .\iniciar_whatsapp.ps1
+   ```
+   *(O manualmente: `cd whatsapp_qr && npm install && node index.js`)*
+
+2. **Escanear el código QR:**
+   - Aparecerá directamente en la terminal o en el panel web local **`http://localhost:3005`**.
+   - En tu celular abre **WhatsApp → Dispositivos vinculados → Vincular un dispositivo** y escanea el QR.
+   - Envía `/start`, `/login`, `/materias`, `/tareas`, `/pendientes`, `/recordar` o `/preguntar` desde WhatsApp.
+
+---
+
+### Opción 3: Con Docker Compose
 
 Para desplegar el bot en un contenedor Docker:
 

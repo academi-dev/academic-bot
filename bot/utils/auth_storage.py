@@ -4,24 +4,27 @@ Almacenamiento en memoria para tokens de autenticación JWT.
 Asocia cada chat_id de Telegram con su token de acceso y metadatos de usuario.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
+
+ChatKey = Union[int, str]
 
 
 class AuthStorage:
     """
-    Gestor de sesiones en memoria para usuarios de Telegram.
+    Gestor de sesiones en memoria para usuarios de Telegram y WhatsApp.
     
-    Almacena tokens JWT y datos básicos del usuario autenticado mapeados por chat_id.
+    Almacena tokens JWT y datos básicos del usuario autenticado mapeados por
+    identificador de chat (`int` en Telegram o `str` JID/teléfono en WhatsApp).
     """
 
     def __init__(self) -> None:
         """Inicializa el almacén de sesiones vacío."""
-        self._tokens: Dict[int, str] = {}
-        self._users: Dict[int, Dict[str, Any]] = {}
+        self._tokens: Dict[ChatKey, str] = {}
+        self._users: Dict[ChatKey, Dict[str, Any]] = {}
 
     def set_token(
         self,
-        chat_id: int,
+        chat_id: ChatKey,
         token: str,
         user_info: Optional[Dict[str, Any]] = None
     ) -> None:
@@ -39,19 +42,19 @@ class AuthStorage:
         else:
             self._users.setdefault(chat_id, {})
 
-    def get_token(self, chat_id: int) -> Optional[str]:
+    def get_token(self, chat_id: ChatKey) -> Optional[str]:
         """
         Obtiene el token JWT almacenado para un chat_id.
 
         Args:
-            chat_id: Identificador del chat.
+            chat_id: Identificador del chat (Telegram int o WhatsApp str).
 
         Returns:
             El token JWT como string o None si no existe sesión activa.
         """
         return self._tokens.get(chat_id)
 
-    def get_user_info(self, chat_id: int) -> Optional[Dict[str, Any]]:
+    def get_user_info(self, chat_id: ChatKey) -> Optional[Dict[str, Any]]:
         """
         Obtiene los datos del usuario asociados a un chat_id.
 
@@ -63,7 +66,7 @@ class AuthStorage:
         """
         return self._users.get(chat_id)
 
-    def is_authenticated(self, chat_id: int) -> bool:
+    def is_authenticated(self, chat_id: ChatKey) -> bool:
         """
         Verifica si un chat_id cuenta con un token de sesión almacenado.
 
@@ -75,7 +78,7 @@ class AuthStorage:
         """
         return chat_id in self._tokens and bool(self._tokens[chat_id])
 
-    def remove_token(self, chat_id: int) -> bool:
+    def remove_token(self, chat_id: ChatKey) -> bool:
         """
         Elimina la sesión y el token almacenados para un chat_id (logout).
 

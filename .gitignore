@@ -12,6 +12,9 @@ venv/
 *.log
 chroma_db/
 data/
+node_modules/
+whatsapp_qr/node_modules/
+whatsapp_qr/auth_info_baileys/
 *.sqlite3
 *.db
 .DS_Store
