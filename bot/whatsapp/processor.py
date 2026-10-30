@@ -330,7 +330,7 @@ class WhatsAppCommandProcessor:
         fecha_legible = format_datetime_friendly(trigger_dt)
         notif_text = format_reminder_notification(
             tarea_titulo=mensaje_tarea,
-            tiempo_restante=f"Programado hace {tiempo_str}",
+            fecha_entrega=trigger_dt.isoformat(),
         )
         return {
             "reply": (
