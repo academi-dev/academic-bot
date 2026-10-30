@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  academic-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: academic-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - API_BASE_URL=${API_BASE_URL:-http://academic-api:8000/api/v1}
+      - RAG_BASE_URL=${RAG_BASE_URL:-http://academic-rag:8001/api/v1}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    networks:
+      - academic-network
+
+networks:
+  academic-network:
+    name: academic-network
+    external: true
