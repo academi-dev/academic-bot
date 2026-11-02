@@ -116,7 +116,7 @@ class WhatsAppCommandProcessor:
         # Limpiar cualquier estado anterior si envía un nuevo comando explícito
         self._states.pop(sender_id, None)
 
-        if lower in ("/start", "/help", "hola", "menu", "menú", "ayuda"):
+        if lower in ("/start", "/help", "hola", "menu", "menú", "ayuda", "academic", "/academic"):
             return {"reply": self.get_welcome_menu(sender_id), "reminder": None}
 
         if lower.startswith("/logout") or lower == "salir":
@@ -146,14 +146,17 @@ class WhatsAppCommandProcessor:
         if lower.startswith("/preguntar"):
             return await self._handle_preguntar_command(sender_id, text)
 
-        # Si no coincide con ningún comando conocido
-        return {
-            "reply": (
-                "🤔 No reconocí ese comando.\n"
-                "Escribe `/help` para ver la lista de comandos o usa `/preguntar <tu duda>` para consultar tus apuntes."
-            ),
-            "reminder": None,
-        }
+        # Si el mensaje empieza con "/" pero el comando no existe, avisar al usuario.
+        # Si es una conversación personal normal (sin "/"), ignorar para no interferir con chats personales.
+        if text.startswith("/"):
+            return {
+                "reply": (
+                    "🤔 No reconocí ese comando.\n"
+                    "Escribe `/help` para ver la lista de comandos o usa `/preguntar <tu duda>` para consultar tus apuntes."
+                ),
+                "reminder": None,
+            }
+        return {"reply": "", "reminder": None}
 
     async def _handle_login_command(self, sender_id: str, text: str) -> Dict[str, Any]:
         parts = text.split(maxsplit=2)
