@@ -172,7 +172,7 @@ docker compose logs -f academic-bot
 ## 👥 Equipo de Desarrollo
 
 - **Jean Mena** — [@hilton45](https://github.com/hilton45)
-- **Eyfer Mena** — [@eyfer3174-commits](https://github.com/eyfer3174-commits-commits)
+- **Eyfer Mena** — [@eyfer3174-commits](https://github.com/eyfer3174-commits)
 
 **Organización:** [academic-dev](https://github.com/academic-dev)
 
